@@ -1,111 +1,84 @@
 # 🎧 Model Card: Music Recommender Simulation
 
-## 1. Model Name  
+## 1. Model Name
 
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
-
----
-
-## 2. Intended Use  
-
-Describe what your recommender is designed to do and who it is for. 
-
-Prompts:  
-
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
+**VibeFinder: CLI-First Content Recommender**
 
 ---
 
-## 3. How the Model Works  
+## 2. Intended Use
 
-Explain your scoring approach in simple language.  
+VibeFinder demonstrates how a content-based music recommender turns a user's stated preferences into a ranked list of songs. It recommends songs from a small local catalog using genre, mood, energy, and acousticness. It assumes that one favorite genre, one favorite mood, a target energy level, and an acoustic preference are reasonable summaries of the user's taste. This is intended for classroom exploration and experimentation, not production use or high-stakes decisions about a listener's identity or taste.
 
-Prompts:  
 
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
-
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
 
 ---
 
-## 4. Data  
+## 3. How the Model Works
 
-Describe the dataset the model uses.  
+The model compares each song with the user's profile. An exact genre match contributes **2 points**, while an exact mood match contributes **1 point**. Energy and acousticness contribute up to **1 point each**, based on how close the song is to the user's target values. The total is normalized to a score between 0 and 1, every song is scored, and the highest-scoring songs are returned as the top recommendations.
 
-Prompts:  
+Genre and mood are soft preferences rather than filters, so songs from other genres can still be discovered when their audio characteristics are similar. The implementation adds CSV loading, configurable weighting strategies, ranking, and explanations of the features that contributed to each recommendation. The default recipe prioritizes genre intent, while balanced and discovery recipes support comparison experiments.
 
-- How many songs are in the catalog  
-- What genres or moods are represented  
-- Did you add or remove data  
-- Are there parts of musical taste missing in the dataset  
+
 
 ---
 
-## 5. Strengths  
+## 4. Data
 
-Where does your system seem to work well  
+The model uses the 25-song catalog in `data/songs.csv`. Each song includes an ID, title, artist, genre, mood, energy, tempo, valence, danceability, and acousticness. The catalog contains 22 genres: most occur once, while lofi occurs three times and pop occurs twice. It contains 21 moods: most occur once, while chill occurs three times and happy and intense occur twice each.
 
-Prompts:  
+The data is a small, hand-curated simulation rather than a representative sample of real-world music. It does not include listening history, user ratings, lyrics, language, release date, popularity, cultural context, or collaborative behavior. Valence, danceability, and tempo are stored as additional descriptors, but the finalized scoring recipe does not use them because current profiles do not define matching targets.
 
-- User types for which it gives reasonable results  
-- Any patterns you think your scoring captures correctly  
-- Cases where the recommendations matched your intuition  
+
 
 ---
 
-## 6. Limitations and Bias 
+## 5. Strengths
 
-Where the system struggles or behaves unfairly. 
+The model works well when a user has clear preferences represented in the catalog. High-Energy Pop ranks a happy pop song first, Chill Lofi ranks chill lofi songs first, and Deep Intense Rock ranks the intense rock song first. Energy similarity helps distinguish songs within or across genres, while soft categorical matching allows some discovery instead of eliminating every song that misses one label.
 
-Prompts:  
+The explanations are simple and understandable: they identify genre, mood, energy, and acousticness matches. The CLI-first design also makes it easy to compare several profiles and observe how changing preferences changes the ranking.
 
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
+
 
 ---
 
-## 7. Evaluation  
+## 6. Limitations and Bias
 
-How you checked whether the recommender behaved as expected. 
+The strongest weakness discovered during profile experiments is that numeric features can make a non-matching-genre song rank highly. For the Deep Intense Rock profile, Gym Hero appears near the top because its energy and acousticness are similar, even though it is pop rather than rock. The default recipe gives genre twice the weight of mood, which may push down a song with an excellent mood match from another genre. The small catalog is unevenly represented, so genres with more entries have more opportunities to appear.
 
-Prompts:  
+The model does not understand lyrics, language, cultural context, artist identity, or the personal meaning of a song. Genre and mood labels can be subjective, and one favorite genre and mood cannot represent complex or changing taste. The system may therefore overfit to the provided labels and audio values while missing songs a real listener would consider a good match.
 
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
 
-No need for numeric metrics unless you created some.
 
 ---
 
-## 8. Future Work  
+## 7. Evaluation
 
-Ideas for how you would improve the model next.  
+The recommender was evaluated with three named profiles: High-Energy Pop, Chill Lofi, and Deep Intense Rock. For each profile, the CLI scored the full catalog, sorted the results, and displayed the top five songs with explanations. I checked whether the highest-ranked songs matched each profile's genre, mood, and target energy, and whether scores stayed in the expected 0-to-1 range.
 
-Prompts:  
+The results matched the main expectations: Sunrise City ranked first for High-Energy Pop, Midnight Coding ranked first for Chill Lofi, and Storm Runner ranked first for Deep Intense Rock. I also ran the starter object-oriented tests and a direct CLI smoke test. The most informative surprise was that a different-genre song could rank highly when its energy and acousticness were close to the target.
 
-- Additional features or preferences  
-- Better ways to explain recommendations  
-- Improving diversity among the top results  
-- Handling more complex user tastes  
+
 
 ---
 
-## 9. Personal Reflection  
+## 8. Future Work
 
-A few sentences about your experience.  
+ - Add user targets for valence, danceability, and tempo.
+ - Add more songs and measure genre and mood coverage.
+ - Support multiple favorite genres, moods, and energy ranges.
+ - Add diversity rules so results do not overrepresent one genre, artist, or mood.
+ - Show component scores and weighted contributions in explanations.
+ - Compare recipes with user feedback or ratings.
 
-Prompts:  
 
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+
+---
+
+## 9. Personal Reflection
+
+This project showed me that a recommender is not simply finding songs that look similar; it applies assumptions about which similarities matter most. Changing the genre and mood weights can change the ranking even when the catalog and profile stay the same. I learned that a transparent scoring rule is easy to inspect, but it can still produce biased results because of the catalog and labels it receives. This made the tradeoff between precise recommendations and useful discovery more visible than I expected.
+
+

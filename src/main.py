@@ -12,31 +12,46 @@ You will implement the functions in recommender.py:
 from recommender import load_songs, recommend_songs
 
 
-def main() -> None:
-    songs = load_songs("data/songs.csv") 
-
-    # Taste profile used by the content-based recommender. The categorical
-    # preferences separate broad musical styles, while the numeric values let
-    # the scorer find songs with a similar sound within or across genres.
-    user_prefs = {
+USER_PROFILES = {
+    "High-Energy Pop": {
+        "genre": "pop",
+        "mood": "happy",
+        "energy": 0.85,
+        "acousticness": 0.15,
+        "valence": 0.85,
+        "danceability": 0.85,
+    },
+    "Chill Lofi": {
+        "genre": "lofi",
+        "mood": "chill",
+        "energy": 0.40,
+        "acousticness": 0.75,
+        "valence": 0.60,
+        "danceability": 0.55,
+    },
+    "Deep Intense Rock": {
         "genre": "rock",
         "mood": "intense",
         "energy": 0.88,
         "acousticness": 0.15,
         "valence": 0.50,
         "danceability": 0.65,
-    }
+    },
+}
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
 
-    print("\nTop recommendations:\n")
-    for rec in recommendations:
-        # You decide the structure of each returned item.
-        # A common pattern is: (song, score, explanation)
-        song, score, explanation = rec
-        print(f"{song['title']} - Score: {score:.2f}")
-        print(f"Because: {explanation}")
-        print()
+def main() -> None:
+    """Print top recommendations for each example user profile."""
+    songs = load_songs("data/songs.csv")
+
+    for profile_name, user_prefs in USER_PROFILES.items():
+        recommendations = recommend_songs(user_prefs, songs, k=5)
+
+        print(f"\n{profile_name} — Top recommendations:\n")
+        for song, score, explanation in recommendations:
+            print(f"{song['title']} - Score: {score:.2f}")
+            print(f"Because: {explanation}")
+            print()
 
 
 if __name__ == "__main__":
