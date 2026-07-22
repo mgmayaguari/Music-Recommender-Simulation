@@ -15,8 +15,17 @@ from recommender import load_songs, recommend_songs
 def main() -> None:
     songs = load_songs("data/songs.csv") 
 
-    # Starter example profile
-    user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8}
+    # Taste profile used by the content-based recommender. The categorical
+    # preferences separate broad musical styles, while the numeric values let
+    # the scorer find songs with a similar sound within or across genres.
+    user_prefs = {
+        "genre": "rock",
+        "mood": "intense",
+        "energy": 0.88,
+        "acousticness": 0.15,
+        "valence": 0.50,
+        "danceability": 0.65,
+    }
 
     recommendations = recommend_songs(user_prefs, songs, k=5)
 

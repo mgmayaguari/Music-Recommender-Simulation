@@ -9,3 +9,18 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
 8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
 9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
 10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+11,Velvet Waltz,Clara North,classical,dreamy,0.31,66,0.68,0.29,0.94
+12,Island Sunrise,The Tidekeepers,reggae,hopeful,0.64,96,0.82,0.76,0.38
+13,Concrete Poetry,Southside Verse,hip hop,confident,0.78,92,0.63,0.85,0.16
+14,Iron Horizon,Black Anvil,metal,aggressive,0.97,168,0.35,0.59,0.03
+15,Blue Note Memory,Harbor Street,blues,nostalgic,0.46,84,0.44,0.48,0.67
+16,Open Road Letter,Maple & Pine,country,homesick,0.58,104,0.57,0.64,0.52
+17,Neon Heartbeat,Prism Avenue,edm,euphoric,0.95,128,0.91,0.93,0.08
+18,Paper Planes,The Sidewalks,punk,rebellious,0.89,176,0.62,0.72,0.06
+19,Mariposa Nights,Luna Roja,latin,romantic,0.73,102,0.88,0.90,0.20
+20,Slow Motion,Amber Room,r&b,sensual,0.52,88,0.74,0.69,0.43
+21,Sunday Vinyl,Golden Thread,soul,grateful,0.49,76,0.79,0.57,0.72
+22,Pocket Full of Sunshine,The Brass Parade,funk,playful,0.81,112,0.86,0.91,0.12
+23,Northern Lights Choir,Evergreen Voices,gospel,inspired,0.67,108,0.93,0.45,0.61
+24,Wildflower Season,June Valley,folk,serene,0.38,70,0.77,0.43,0.88
+25,After the Rain,Silver Comet,shoegaze,melancholic,0.61,118,0.39,0.51,0.47
